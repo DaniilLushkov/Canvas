@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Falling Snowflakes</title>
+<style>
+canvas {
+background: #000;
+}
+</style>
+</head>
+<body>
+<canvas id="snowCanvas" width="800" height="600"></canvas>
+<script>
+const canvas = document.getElementById('snowCanvas');
+const ctx = canvas.getContext('2d');
+const snowflakes = [];
+const snowflakeCount = 100;
+
+function createSnowflakes() {
+for (let i = 0; i < snowflakeCount; i++) {
+snowflakes.push({
+x: Math.random() * canvas.width,
+y: Math.random() * canvas.height,
+radius: Math.random() * 3 + 1,
+speed: Math.random() * 1 + 0.5
+});
+}
+}
+
+function drawSnowflakes() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = 'white';
+ctx.beginPath();
+snowflakes.forEach(snowflake => {
+ctx.moveTo(snowflake.x, snowflake.y);
+ctx.arc(snowflake.x, snowflake.y, snowflake.radius, 0, Math.PI * 2);
+});
+ctx.fill();
+moveSnowflakes();
+}
+
+function moveSnowflakes() {
+snowflakes.forEach(snowflake => {
+snowflake.y += snowflake.speed;
+if (snowflake.y > canvas.height) {
+snowflake.y = 0;
+snowflake.x = Math.random() * canvas.width;
+}
+});
+}
+
+createSnowflakes();
+setInterval(drawSnowflakes, 30);
+</script>
+</body>
+</html>

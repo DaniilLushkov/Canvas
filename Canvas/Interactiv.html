@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Interactive Drawing</title>
+<style>
+canvas {
+border: 1px solid black;
+cursor: crosshair;
+}
+</style>
+</head>
+<body>
+<div>
+<label for="colorPicker">Цвет: </label>
+<input type="color" id="colorPicker">
+<label for="lineWidth">Толщина линии: </label>
+<input type="number" id="lineWidth" value="2" min="1" max="10">
+</div>
+<canvas id="drawingCanvas" width="350" height="150"></canvas>
+<script>
+const canvas = document.getElementById('drawingCanvas');
+const ctx = canvas.getContext('2d');
+let painting = false;
+let colorPicker = document.getElementById('colorPicker');
+let lineWidth = document.getElementById('lineWidth');
+
+canvas.addEventListener('mousedown', startPosition);
+canvas.addEventListener('mouseup', endPosition);
+canvas.addEventListener('mousemove', draw);
+
+function startPosition(e) {
+painting = true;
+draw(e);
+}
+
+function endPosition() {
+painting = false;
+ctx.beginPath();
+}
+
+function draw(e) {
+if (!painting) return;
+ctx.lineWidth = lineWidth.value;
+ctx.lineCap = 'round';
+ctx.strokeStyle = colorPicker.value;
+
+ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+ctx.stroke();
+ctx.beginPath();
+ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+}
+</script>
+</body>
+</html>
